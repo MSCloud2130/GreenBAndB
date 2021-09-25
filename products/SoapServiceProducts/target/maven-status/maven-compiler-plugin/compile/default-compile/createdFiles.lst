@@ -1,0 +1,8 @@
+io/spring/guides/gs_producing_web_service/package-info.class
+io/spring/guides/gs_producing_web_service/GetServiceBySupplierRequest.class
+io/spring/guides/gs_producing_web_service/GetAllServicesRequest.class
+io/spring/guides/gs_producing_web_service/GetServicesListResponse.class
+io/spring/guides/gs_producing_web_service/GetServiceResponse.class
+io/spring/guides/gs_producing_web_service/ServiceSOAP.class
+io/spring/guides/gs_producing_web_service/GetServiceRequest.class
+io/spring/guides/gs_producing_web_service/ObjectFactory.class

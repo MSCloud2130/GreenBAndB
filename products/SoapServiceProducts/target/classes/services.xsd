@@ -1,0 +1,52 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://spring.io/guides/gs-producing-web-service"
+           targetNamespace="http://spring.io/guides/gs-producing-web-service" elementFormDefault="qualified">
+
+    <xs:element name="getServiceRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="serviceId" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getServiceResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="service" type="tns:serviceSOAP"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="getAllServicesRequest">
+        <xs:complexType>
+            <xs:sequence>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+
+     <xs:element name="getServiceBySupplierRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="supplierId" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+   
+    <xs:element name="getServicesListResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="service" type="tns:serviceSOAP" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="serviceSOAP">
+        <xs:sequence>
+            <xs:element name="name" type="xs:string"/>
+            <xs:element name="serviceId" type="xs:string"/>
+            <xs:element name="supplierId" type="xs:string"/>
+            <xs:element name="category" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

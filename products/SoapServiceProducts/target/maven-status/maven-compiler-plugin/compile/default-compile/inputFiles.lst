@@ -1,0 +1,13 @@
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/target/generated-sources/jaxb/io/spring/guides/gs_producing_web_service/GetServiceBySupplierRequest.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/target/generated-sources/jaxb/io/spring/guides/gs_producing_web_service/GetServicesListResponse.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/target/generated-sources/jaxb/io/spring/guides/gs_producing_web_service/GetServiceRequest.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/target/generated-sources/jaxb/io/spring/guides/gs_producing_web_service/ObjectFactory.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/src/main/java/greenbnb/ms/connection/Entities/Service.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/target/generated-sources/jaxb/io/spring/guides/gs_producing_web_service/GetAllServicesRequest.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/src/main/java/greenbnb/ms/connection/WebServiceConfig.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/src/main/java/greenbnb/ms/connection/Repositories/ServiceRepository.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/src/main/java/greenbnb/ms/connection/ConnectionApplication.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/target/generated-sources/jaxb/io/spring/guides/gs_producing_web_service/GetServiceResponse.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/target/generated-sources/jaxb/io/spring/guides/gs_producing_web_service/package-info.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/target/generated-sources/jaxb/io/spring/guides/gs_producing_web_service/ServiceSOAP.java
+/home/jorge/Clases/Microservicios/Proyecto/greenbnb/connection/src/main/java/greenbnb/ms/connection/ServiceEndpoint.java
