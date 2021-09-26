@@ -25,7 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="serviceId" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
+ *         &lt;element name="serviceName" type="{http://www.w3.org/2001/XMLSchema}string"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -36,36 +36,36 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "serviceId"
+    "serviceName"
 })
-@XmlRootElement(name = "getServiceRequest")
-public class GetServiceRequest {
+@XmlRootElement(name = "getServiceByNameRequest")
+public class GetServiceByNameRequest {
 
     @XmlElement(required = true)
-    protected String serviceId;
+    protected String serviceName;
 
     /**
-     * Gets the value of the serviceId property.
+     * Gets the value of the serviceName property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getServiceId() {
-        return serviceId;
+    public String getServiceName() {
+        return serviceName;
     }
 
     /**
-     * Sets the value of the serviceId property.
+     * Sets the value of the serviceName property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setServiceId(String value) {
-        this.serviceId = value;
+    public void setServiceName(String value) {
+        this.serviceName = value;
     }
 
 }
