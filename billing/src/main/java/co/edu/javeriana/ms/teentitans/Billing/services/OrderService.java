@@ -7,6 +7,7 @@ package co.edu.javeriana.ms.teentitans.Billing.services;
 
 import co.edu.javeriana.ms.teentitans.Billing.models.Item;
 import co.edu.javeriana.ms.teentitans.Billing.models.Order;
+import co.edu.javeriana.ms.teentitans.Billing.proxy.ProxyClients;
 import co.edu.javeriana.ms.teentitans.Billing.repositories.CartRepository;
 import co.edu.javeriana.ms.teentitans.Billing.repositories.OrderRepository;
 import exceptions.CartNotFoundException;
@@ -24,12 +25,17 @@ import org.springframework.stereotype.Service;
 public class OrderService implements IOrderService{
     @Autowired
     OrderRepository orderRepo;
-
+    
+    @Autowired
+    ProxyClients proxyClients;
+    
+    
     @Override
     public boolean createOrder(String idclient, String currency, String creditCard, List<Item> items) {
         if(creditCard.length() >= 16 )
         {
-            Order order = new Order(idclient,currency,creditCard, items );
+            
+            Order order = new Order(idclient,currency,creditCard, items, getTotal(items) );
             orderRepo.save(order);
             return true;
         }
@@ -37,9 +43,17 @@ public class OrderService implements IOrderService{
             return false;
         }
     }
+    private double getTotal (List<Item> items){
+        double total =0 ;
+        for (Item item : items){
+            total += 1000 * item.getQuantity();
+        }
+        return total;
+    }
 
     @Override
     public List<Order> getOrders(String id) {
+        
         return orderRepo.findByIdclient(id); //orderRepo.fin
     }
 

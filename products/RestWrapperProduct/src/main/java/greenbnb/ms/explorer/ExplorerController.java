@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 @RestController
-@RequestMapping("/services")
+@RequestMapping("service")
 public class ExplorerController extends WebServiceGatewaySupport{
     
     @Autowired

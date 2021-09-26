@@ -5,6 +5,7 @@
  */
 package co.edu.javeriana.ms.teentitans.Billing.proxy;
 
+import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -52,6 +53,22 @@ public class ProxyClients {
            return false;
        }
        
+    }
+
+    public double getPrice(String id_service) {
+        try{
+           HashMap result = servicesWebClient
+                .get()
+                .uri(id_service)
+                .retrieve()
+                .bodyToMono(HashMap.class)
+                .block();
+           
+           return 10000;
+       }catch(RuntimeException e)
+       {
+           return 0;
+       }
     }
 
     

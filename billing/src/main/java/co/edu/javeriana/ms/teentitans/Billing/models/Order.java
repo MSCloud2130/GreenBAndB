@@ -30,11 +30,12 @@ public class Order {
     private String currency;
     private List<Item> items;
 
-    public Order(String idclient, String currency, String creditCard, List<Item> items) {
+    public Order(String idclient, String currency, String creditCard, List<Item> items, double total) {
         
         this.idclient = idclient;
         this.currency = currency;
-        this.idclient = creditCard;
-        items= new ArrayList<>(items);
+        this.credit_card = creditCard;
+        this.date = new Date();
+        this.items= new ArrayList<>(items);
     }
 }

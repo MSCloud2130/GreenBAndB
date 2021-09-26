@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package configuration;
+package co.edu.javeriana.ms.teentitans.Billing.configuration;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +29,7 @@ public class WebClientConfiguration {
     public WebClient servicesWebClient(WebClient.Builder webClientBuilder) {
         return webClientBuilder
                 .clone()
-                .baseUrl("http://services/services??/")
+                .baseUrl("http://localhost:8181/service/")
                 .build();
     }
 }

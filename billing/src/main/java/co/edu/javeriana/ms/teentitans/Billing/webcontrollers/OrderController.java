@@ -31,23 +31,23 @@ public class OrderController {
     @Autowired
     IOrderService orderService;
     
+    
+    
+    
   
     
     @GetMapping("/clients/{id}")
     List<Order> getOrders(@PathVariable("id") String id){
-        //Cpnsumir servicio de cleintes.
         return orderService.getOrders(id);
     }
     
     @GetMapping("/clients/{id}/{idOrder}")
     Order getOrderById(@PathVariable("id") String id, @PathVariable("idOrder") String idOrder){
-        //Cosumir sr clients
         return orderService.getOrderById(id, idOrder);
     }
     
     @DeleteMapping("/clients/{id}/{idOrder}")
     void deleteOrderById(@PathVariable("id") String id, @PathVariable("idOrder") String idOrder){
-        //Cosumir sr clients
          orderService.deleteOrderById(id, idOrder);
     }
     
