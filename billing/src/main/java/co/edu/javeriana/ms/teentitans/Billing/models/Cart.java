@@ -5,6 +5,7 @@
  */
 package co.edu.javeriana.ms.teentitans.Billing.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,4 +23,12 @@ public class Cart {
     @Id
     private String id;
     private List<Item> items;
+
+    public Cart(String id) {
+        this.id = id;
+        this.items = new ArrayList<>();
+    }
+    
+   
 }
+

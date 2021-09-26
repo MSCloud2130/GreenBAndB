@@ -5,12 +5,11 @@
  */
 package co.edu.javeriana.ms.teentitans.users.services;
 
+import co.edu.javeriana.ms.teentitans.users.exceptions.UsernameAlreadyUsedException;
 import co.edu.javeriana.ms.teentitans.users.model.Client;
 import co.edu.javeriana.ms.teentitans.users.repository.ClientRepository;
+import exceptions.ClientNotFoundException;
 import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,15 +28,16 @@ public class ClientService implements ClientServiceInterface{
         this.repository = repository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
-
-   
-    
-    
     
     @Override
     public Client createClient(Client client) {
-        client.setPassword(bCryptPasswordEncoder.encode(client.getPassword()));
-        return repository.save(client);
+        if (!repository.existsByUsernameAndEmail(client.getUsername(), client.getEmail())){
+            client.setPassword(bCryptPasswordEncoder.encode(client.getPassword()));
+            return repository.save(client);
+        }else {
+            throw new UsernameAlreadyUsedException(client.getUsername());
+        }
+        
     }
 
     @Override
@@ -51,9 +51,12 @@ public class ClientService implements ClientServiceInterface{
     }
 
     @Override
-    public Optional<Client> getClientById(String id) {
-        return repository.findById(id);
+    public Client getClientById(String id) {
+        return repository.findById(id)
+                .orElseThrow(()-> new ClientNotFoundException(id));
     }
+    
+   
 
     @Override
     public List<Client> getAllClients() {
@@ -62,8 +65,11 @@ public class ClientService implements ClientServiceInterface{
 
     @Override
     public Client getByUsername(String username) {
-        return repository.findByUsername(username);
+        return repository.findByUsername(username)
+                .orElseThrow(()-> new ClientNotFoundException(username));
     }
+
+    
     
     
 }

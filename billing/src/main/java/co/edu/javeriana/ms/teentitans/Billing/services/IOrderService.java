@@ -22,5 +22,7 @@ public interface IOrderService {
     
     public List<Order> getOrders(String id);
     
-    public Order getOrderById (String id);
+    public Order getOrderById (String id, String idOrder);
+    
+    public void deleteOrderById (String id, String idOrder);
 }

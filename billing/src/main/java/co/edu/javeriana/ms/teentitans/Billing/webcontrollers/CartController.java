@@ -44,14 +44,14 @@ public class CartController {
     Cart addCartItem(@PathVariable("id") String id, @RequestBody Item newItem){
         return cartService.addCartItem(id, newItem);
     }
-    @DeleteMapping("/{id}/item")
-    void deleteCartItem(@PathVariable("id") String id, @RequestParam("id_service") String idService){
+    @DeleteMapping("/{id}/item/{id_service}")
+    void deleteCartItem(@PathVariable("id") String id, @PathVariable("id_service") String idService){
         cartService.deleteCartItem(id, idService);
     }
     
     @PutMapping("/{id}/item")
-    Cart setCartItemQuantity(@PathVariable("id") String id, @RequestParam("id_service") String idService, @RequestParam("quantity") int quantity){
-        return cartService.setCartItemQuantity(id, idService, quantity);
+    Cart setCartItemQuantity(@PathVariable("id") String id, @RequestBody Item item){
+        return cartService.setCartItemQuantity(id, item.getId_service(), item.getQuantity());
     }
     
     @PostMapping("/{id}/pay")

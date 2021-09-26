@@ -12,6 +12,7 @@ import co.edu.javeriana.ms.teentitans.Billing.repositories.OrderRepository;
 import exceptions.CartNotFoundException;
 import exceptions.OrderNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,13 +40,25 @@ public class OrderService implements IOrderService{
 
     @Override
     public List<Order> getOrders(String id) {
-        return null; //orderRepo.fin
+        return orderRepo.findByIdclient(id); //orderRepo.fin
     }
 
     @Override
-    public Order getOrderById(String id) {
-         return orderRepo.findById(id)
+    public Order getOrderById(String id, String idOrder) {
+         return orderRepo.findByIdclientAndId(id,idOrder)
                 .orElseThrow(() -> new OrderNotFoundException(id));
+    }
+
+    @Override
+    public void deleteOrderById(String id, String idOrder) {
+        Optional<Order> order =  orderRepo.findByIdclientAndId(id,idOrder);
+        if(order.isPresent())
+        {
+            orderRepo.delete(order.get());
+        }else{
+            throw new OrderNotFoundException(idOrder);
+        }
+        
     }
 
 

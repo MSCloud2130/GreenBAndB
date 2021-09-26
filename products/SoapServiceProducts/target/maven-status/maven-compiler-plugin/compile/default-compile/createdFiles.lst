@@ -1,8 +1,13 @@
+greenbnb/ms/connection/WebServiceConfig.class
 io/spring/guides/gs_producing_web_service/package-info.class
 io/spring/guides/gs_producing_web_service/GetServiceBySupplierRequest.class
+greenbnb/ms/connection/Entities/Service.class
+greenbnb/ms/connection/ConnectionApplication.class
 io/spring/guides/gs_producing_web_service/GetAllServicesRequest.class
 io/spring/guides/gs_producing_web_service/GetServicesListResponse.class
+greenbnb/ms/connection/ServiceEndpoint.class
 io/spring/guides/gs_producing_web_service/GetServiceResponse.class
-io/spring/guides/gs_producing_web_service/ServiceSOAP.class
 io/spring/guides/gs_producing_web_service/GetServiceRequest.class
+io/spring/guides/gs_producing_web_service/ServiceSOAP.class
 io/spring/guides/gs_producing_web_service/ObjectFactory.class
+greenbnb/ms/connection/Repositories/ServiceRepository.class

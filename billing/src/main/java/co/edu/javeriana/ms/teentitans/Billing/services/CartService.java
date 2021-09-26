@@ -5,13 +5,14 @@
  */
 package co.edu.javeriana.ms.teentitans.Billing.services;
 
+import co.edu.javeriana.ms.teentitans.Billing.exceptions.ServiceDoesNotExistException;
 import co.edu.javeriana.ms.teentitans.Billing.models.Cart;
 import co.edu.javeriana.ms.teentitans.Billing.models.Item;
+import co.edu.javeriana.ms.teentitans.Billing.proxy.ProxyClients;
 import co.edu.javeriana.ms.teentitans.Billing.repositories.CartRepository;
 import exceptions.CartNotFoundException;
 import exceptions.UnableToCompletePurchaseException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +26,35 @@ public class CartService implements ICartService {
     CartRepository cartRepo;
     @Autowired
     IOrderService orderService;
+    @Autowired
+    ProxyClients proxyClients;
 
     @Override
     public Cart getCartById(String id) {
-        return cartRepo.findById(id)
-                .orElseThrow(() -> new CartNotFoundException(id));
+        
+        Cart cart = cartRepo.findById(id).orElse(null);
+        if (cart == null ){
+            if(proxyClients.clientExists(id))
+            {
+                 cart = new Cart(id);
+            cartRepo.save(cart);
+            return cart;
+            }
+            else{
+                throw new CartNotFoundException(id);
+            }
+           
+        }else return cart;
     }
 
     @Override
     public Cart addCartItem(String id, Item newItem) {
-        Cart cart = cartRepo.findById(id)
-                .orElseThrow(() -> new CartNotFoundException(id));
+        if (proxyClients.serviceExists(newItem.getId_service())){
+            Cart cart = cartRepo.findById(id).orElse(null);
+        if (cart == null){
+            cart = new Cart(id);
+            cartRepo.save(cart);
+        }
         Boolean hasItem = false;
         int i = 0;
         while(i < cart.getItems().size() && !hasItem) {
@@ -50,6 +69,10 @@ public class CartService implements ICartService {
         if (!hasItem)
             cart.getItems().add(newItem);
         return cartRepo.save(cart);
+        }else
+            throw new ServiceDoesNotExistException (newItem.getId_service());
+        
+
     }
 
     @Override

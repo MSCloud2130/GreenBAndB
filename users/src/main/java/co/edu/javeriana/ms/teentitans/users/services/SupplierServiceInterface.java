@@ -21,7 +21,7 @@ public interface SupplierServiceInterface {
     Supplier createSupplier(Supplier supplier);
     Supplier updateSupplier(Supplier supplier);    
     void deleteSupplier(String id);
-    Optional<Supplier> getSupplierById(String id);
+    Supplier getSupplierById(String id);
     Supplier getByUsername(String username);   
 
 }

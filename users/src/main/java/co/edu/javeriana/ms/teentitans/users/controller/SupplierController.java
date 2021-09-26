@@ -38,7 +38,6 @@ public class SupplierController {
     
     @PostMapping()
     Supplier newSupplier(@RequestBody Supplier supplier){
-        System.out.println("create supplier controloler \n ");
         return service.createSupplier(supplier);
     }
     
@@ -52,10 +51,13 @@ public class SupplierController {
         service.deleteSupplier(id);
     }
     
+    @GetMapping("/{id}")
+    Supplier getById(@PathVariable String id) {
+        return service.getSupplierById(id);
+    }
     
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     Supplier getByUsername(@PathVariable String username) {
-       
         return service.getByUsername(username);
     }
     

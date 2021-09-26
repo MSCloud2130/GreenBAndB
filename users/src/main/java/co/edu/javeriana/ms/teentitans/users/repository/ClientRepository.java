@@ -6,6 +6,7 @@
 package co.edu.javeriana.ms.teentitans.users.repository;
 
 import co.edu.javeriana.ms.teentitans.users.model.Client;
+import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
@@ -13,6 +14,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  * @author estudiantes
  */
 public interface ClientRepository extends MongoRepository<Client, String>{
-    Client findByUsername ( String username );
-    
+    Optional<Client> findByUsername ( String username );
+    boolean existsByUsernameAndEmail( String username, String email);
 }

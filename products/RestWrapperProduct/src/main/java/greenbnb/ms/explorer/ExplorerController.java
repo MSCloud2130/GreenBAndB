@@ -11,11 +11,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
 @RestController
+@RequestMapping("/services")
 public class ExplorerController extends WebServiceGatewaySupport{
     
     @Autowired
@@ -31,7 +33,7 @@ public class ExplorerController extends WebServiceGatewaySupport{
         return new RestTemplate();
     }
 
-    @GetMapping("/service/{serviceId}")
+    @GetMapping("/{serviceId}")
     public String findServiceById(@PathVariable("serviceId") String serviceId){
         ServiceSOAP response = serviceClient.getServiceById(serviceId).getService();
         ObjectMapper obj = new ObjectMapper();
@@ -45,7 +47,7 @@ public class ExplorerController extends WebServiceGatewaySupport{
         return json;
         
     }
-    @GetMapping("/service/suppliers/{supplierId}")
+    @GetMapping("/suppliers/{supplierId}")
     public String findServiceBySupplierId(@PathVariable("supplierId") String supplierId){
         List<ServiceSOAP> response = serviceClient.getServiceBySupplierId(supplierId).getService();
         ObjectMapper obj = new ObjectMapper();
@@ -60,7 +62,7 @@ public class ExplorerController extends WebServiceGatewaySupport{
         
     }
     
-    @GetMapping("/service")
+    @GetMapping
     public String findAllServices(){
         List<ServiceSOAP> response = serviceClient.getAllServices().getService();
         ObjectMapper obj = new ObjectMapper();

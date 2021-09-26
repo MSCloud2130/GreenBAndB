@@ -20,7 +20,7 @@ public interface ClientServiceInterface {
     Client createClient(Client supplier);
     Client updateClient(Client supplier);    
     void deleteClient(String id);
-    Optional<Client> getClientById(String id);
-    Client getByUsername(String username);   
+    Client getClientById(String id);
+    Client getByUsername(String username);  
 
 }

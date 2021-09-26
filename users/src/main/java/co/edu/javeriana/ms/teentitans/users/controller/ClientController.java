@@ -36,22 +36,26 @@ public class ClientController {
     }
     
     @PostMapping()
-    Client newSupplier(@RequestBody Client client){
+    Client newClient(@RequestBody Client client){
         return service.createClient(client);
     }
     
     @PutMapping("/{id}")
-    Client updateSupplier(@RequestBody Client client, @PathVariable String id) {
+    Client updateClient(@RequestBody Client client, @PathVariable String id) {
         return service.updateClient(client);
     }
     
     @DeleteMapping("/{id}")
-    void deleteSupplier(@PathVariable String id) {
+    void deleteClient(@PathVariable String id) {
         service.deleteClient(id);
     }
     
+    @GetMapping("/{id}")
+    Client getById(@PathVariable String id) {
+        return service.getClientById(id);
+    }
     
-    @GetMapping("/{username}")
+    @GetMapping("username/{username}")
     Client getByUsername(@PathVariable String username) {
         return service.getByUsername(username);
     }

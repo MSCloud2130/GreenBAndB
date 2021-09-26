@@ -17,6 +17,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,20 +55,20 @@ public class SessionService implements SessionServiceInterface, UserDetailsServi
     
     public Session createSession(String username, String password) {
         
-        Client client = repositoryC.findByUsername(username);
-        Supplier supplier = repositoryS.findByUsername(username);
+        Optional<Client> client = repositoryC.findByUsername(username);
+        Optional<Supplier> supplier = repositoryS.findByUsername(username);
         
         Session session = new Session();
         if (client != null || supplier != null) {
         
             
             String passwordDB = "";
-            if (client != null) {
-                passwordDB = client.getPassword();
+            if (client.isPresent()){
+                passwordDB = client.get().getPassword();
                 
                     
-            } else if (supplier != null) {
-                passwordDB = supplier.getPassword();
+            } else if (supplier.isPresent()) {
+                passwordDB = supplier.get().getPassword();
             }
             
             
@@ -97,17 +98,17 @@ public class SessionService implements SessionServiceInterface, UserDetailsServi
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Client client = repositoryC.findByUsername(username);
-        Supplier supplier = repositoryS.findByUsername(username);
+        Optional<Client>  client = repositoryC.findByUsername(username);
+        Optional<Supplier> supplier = repositoryS.findByUsername(username);
         Collection<SimpleGrantedAuthority> au = new ArrayList<>();
-        if (client == null && supplier == null) {
+        if ( !client.isPresent() && !supplier.isPresent()) {
             throw new UsernameNotFoundException("user not found ");
             
-        } else if (client != null) {
-            return new org.springframework.security.core.userdetails.User(client.getUsername(), client.getPassword(), au);
+        } else if (!client.isPresent()) {
+            return new org.springframework.security.core.userdetails.User(client.get().getUsername(), client.get().getPassword(), au);
         } else {
             
-            return new org.springframework.security.core.userdetails.User(supplier.getUsername(), supplier.getPassword(), au);
+            return new org.springframework.security.core.userdetails.User(supplier.get().getUsername(), supplier.get().getPassword(), au);
         }
     }
     

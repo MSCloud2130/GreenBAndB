@@ -6,6 +6,7 @@
 package co.edu.javeriana.ms.teentitans.users.repository;
 
 import co.edu.javeriana.ms.teentitans.users.model.Supplier;
+import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
@@ -14,5 +15,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface SupplierRepository extends MongoRepository<Supplier, String>{
     
-        Supplier findByUsername ( String username );
+        Optional<Supplier> findByUsername ( String username );
+        boolean existsByUsernameAndEmail( String username, String email);
 }

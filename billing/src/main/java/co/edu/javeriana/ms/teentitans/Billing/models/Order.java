@@ -25,7 +25,7 @@ public class Order {
     private String id;
     private String idclient;
     private String credit_card;
-    private Date String;
+    private Date date;
     private double total;
     private String currency;
     private List<Item> items;

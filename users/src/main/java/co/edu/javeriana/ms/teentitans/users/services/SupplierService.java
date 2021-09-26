@@ -5,8 +5,10 @@
  */
 package co.edu.javeriana.ms.teentitans.users.services;
 
+import co.edu.javeriana.ms.teentitans.users.exceptions.UsernameAlreadyUsedException;
 import co.edu.javeriana.ms.teentitans.users.model.Supplier;
 import co.edu.javeriana.ms.teentitans.users.repository.SupplierRepository;
+import exceptions.ClientNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,9 +34,13 @@ public class SupplierService implements SupplierServiceInterface {
     
     @Override
     public Supplier createSupplier(Supplier supplier) {
-       
-        supplier.setPassword(bCryptPasswordEncoder.encode(supplier.getPassword()));
-        return repository.save(supplier);
+        if (!repository.existsByUsernameAndEmail(supplier.getUsername(), supplier.getEmail())){
+            supplier.setPassword(bCryptPasswordEncoder.encode(supplier.getPassword()));
+            return repository.save(supplier);
+        }else {
+            throw new UsernameAlreadyUsedException(supplier.getUsername());
+        }
+        
     }
 
     @Override
@@ -48,8 +54,9 @@ public class SupplierService implements SupplierServiceInterface {
     }
 
     @Override
-    public Optional<Supplier> getSupplierById(String id) {
-        return repository.findById(id);
+    public Supplier getSupplierById(String id) {
+        return repository.findById(id).orElseThrow(() -> 
+        new ClientNotFoundException(id));
     }
 
     @Override
@@ -59,7 +66,9 @@ public class SupplierService implements SupplierServiceInterface {
 
     @Override
     public Supplier getByUsername(String username) {
-        return repository.findByUsername(username);
+        return repository.findByUsername(username)
+                .orElseThrow(
+                        () -> new ClientNotFoundException(username));
     }
     
     
