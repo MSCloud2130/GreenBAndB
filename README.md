@@ -200,4 +200,29 @@ GET localhost:8181/service/suppliers/{supplierId}
 GET localhost:8181/service/name/{serviceName}
 ```  
 
- 
+ #### Consultar Carro de compra
+  - Ruta agregar un item al cart del client del id__client
+ ```bash
+POST localhost:8190/carts/{id_client}/item
+```  
+Estructura JSON esperada como body en la petición: 
+
+```bash
+ {
+ "id_service = "string",
+ "quantity: 0
+ }
+ ```  
+  - Ruta ver un cart del cliente del id_client
+ ```bash
+GET localhost:8190/carts/{id_client}
+```  
+ - Ruta pagar el cart del cliente del id_client
+ ```bash
+POST localhost:8190/carts/{id_client}/pay?currency{currency}&credit_card{credit_card}
+```  
+
+ - Ruta ver todas las ordenes de un cliente del id_client
+ ```bash
+GET localhost:8190/orders/clients/{id_client}
+```  
