@@ -76,4 +76,18 @@ public class ExplorerController extends WebServiceGatewaySupport{
         return json;
     }
 
+    @GetMapping("/service/name/{serviceName}")
+    public String findServiceByName(@PathVariable("serviceName") String serviceName){
+        ServiceSOAP response = serviceClient.getServiceByName(serviceName).getService();
+        ObjectMapper obj = new ObjectMapper();
+        String json = "Error";
+        try {
+            json = obj.writerWithDefaultPrettyPrinter().writeValueAsString(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(json);
+        return json;
+
+    }
 }

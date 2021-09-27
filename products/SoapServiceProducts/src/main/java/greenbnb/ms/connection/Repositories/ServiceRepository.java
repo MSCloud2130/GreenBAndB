@@ -15,5 +15,6 @@ public interface ServiceRepository extends MongoRepository<Service, Integer>{
     public Optional<Service> findByServiceId(String serviceId);
     public List<Service> findAll();
     public List<Service> findBySupplierId(String supplierId);
+    public Optional<Service> findByName(String name);
     
 }

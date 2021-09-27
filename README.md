@@ -123,13 +123,18 @@ docker run -it -p 8081:8081 --rm --name mongotest mongo:latest
   
   <a name="heading-1">Cliente Postman</a>
   ## Cliente Postman
-  Instalar Postman desde [https://www.postman.com/](https://www.postman.com/)
+  Instalar Postman desde [https://www.postman.com/](https://www.postman.com/) y ejecutarlo en la misma máquina en la que se está ejecutando.
 #### Creación de Cliente
-- Ruta para crear un cliente POST  http://localhost:8185/clients
-Ejemplo de JSON para enviar como peticion.
+- Ruta para crear un cliente 
+```bash
+ 
+POST  http://localhost:8185/clients
+ 
+```
+Estructura JSON esperada como body en la petición: 
+
 ```bash
  {
- "id_client": 0,
  "username": "string",
  "firstName": "string",
  "lastName": "string",
@@ -139,12 +144,16 @@ Ejemplo de JSON para enviar como peticion.
  "photo": "string" 
  }
 ```
+	
 #### Creación de Proveedor 
- - Ruta para crear un proveedor POST  http://localhost:8185/suppliers
-Ejemplo de JSON para enviar como peticion.
+ - Ruta para crear un proveedor
+ ```bash
+ 
+ POST  http://localhost:8185/suppliers 
+```
+Estructura JSON esperada como body en la petición: 
 ```bash
  {
- "id_client": 0,
  "username": "string",
  "firstName": "string",
  "lastName": "string",
@@ -155,12 +164,40 @@ Ejemplo de JSON para enviar como peticion.
  }
 ```
 #### Autenticación de Clientes y Proveedores 
- - Ruta para crear una sesión para cliente POST localhost:8185/sessions?username={username}&password={password}
- - Ruta para crear una sesion para proveedor POST
-  localhost:8185/sessions?username={supplieruser}&password={password}
-  
+ - Ruta para crear una sesión para cliente 
+```bash
+POST localhost:8185/sessions?username={username}&password={password}
+```
+
+ - Ruta para crear una sesion para proveedor 
+```bash
+POST localhost:8185/sessions?username={supplieruser}&password={password}
+```  
   #### Obtener Clientes y Proveedores 
- - Ruta para obtener clientes GET localhost:8185/clients
- - Ruta para obtener proveedores GET localhost:8185/suppliers
+ - Ruta para obtener clientes 
+```bash
+ GET localhost:8185/clients
+```  
+ - Ruta para obtener proveedores
+ ```bash
+GET localhost:8185/suppliers
+```  
  #### Consultar Galeria de Servicios
+ - Ruta para obtener todos los servicios
+ ```bash
+GET localhost:8181/service
+```  
+ - Ruta para obtener un servicio por su Id
+ ```bash
+GET localhost:8181/{serviceId}
+```  
+ - Ruta para obtener todos los servicios de un proveedor mediante su id
+ ```bash
+GET localhost:8181/service/suppliers/{supplierId}
+```  
+ - Ruta para obtener un servicio por su nombre
+ ```bash
+GET localhost:8181/service/name/{serviceName}
+```  
+
  

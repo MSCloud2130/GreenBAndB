@@ -1,0 +1,1208 @@
+swagger: "2.0"
+info:
+  description: ""
+  version: "1.0.0"
+  title: "greenbnb Endpoints"
+  termsOfService: ""
+basePath: "/v2"
+tags:
+- name: "cart"
+  description: "Endpoint for Shopping Cart"
+- name: "services"
+  description: "Endpoint for services"
+- name: "reviews"
+  description: "Endpoint for reviews"
+
+- name: "questions"
+  description: "Endpoint for questions"
+- name: "clients"
+  description: "Endpoint to manage Clients"
+- name: "sessions"
+  description: "Endpoint to manage the Client Sessions"
+- name: "suppliers"
+  description: "Endpoint to manage Suppliers. Operations realted to supplier authenticaction and services publication."
+schemes:
+- "https"
+- "http"
+paths:
+  /carts/{id_client}/:
+    get:
+      tags:
+      - "cart"
+      summary: "Get client's cart items from client's id"
+      description: ""
+      operationId: "getCartItems"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id_client"
+        required: true
+        description: "client's id"
+        type: "integer"
+      responses:
+        "500":
+          description: "Internal Server"
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/Cart"
+  /carts/{id_client}/item/:
+    post:
+      tags:
+      - "cart"
+      summary: "Add item to client's cart"
+      description: ""
+      operationId: "addItemToCart"
+      consumes: 
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        description: "Item's id to be saved"
+        schema:
+          $ref: "#/definitions/Item"
+      - in: "path"
+        name: "id_client"
+        required: true
+        description: "client's id"
+        type: "integer"
+      responses:
+        "500":
+          description: "Internal Server"
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/Cart"
+    put:
+      tags:
+      - "cart"
+      summary: "Set quantity of an item in client's cart"
+      description: ""
+      operationId: "setItemQuantity"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        description: "Item to be modified"
+        schema:
+          $ref: "#/definitions/Item"
+      - in: "path"
+        name: "id_client"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "404":
+          description: "Cart Not Found"
+        "500":
+          description: "Internal Server"
+        "200":
+          description: "Success"
+          schema:
+              $ref: "#/definitions/Cart"
+  /carts/{id_client}/item/{id_service}:
+    delete:
+      tags:
+      - "cart"
+      summary: "Delete an item from client's cart"
+      description: ""
+      operationId: "deleteCartItem"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id_client"
+        required: true
+        description: ""
+        type: "integer"
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "404":
+          description: "Cart Not Found"
+        "500":
+          description: "Internal Server"
+        "200":
+          description: "Success"
+          
+  /carts/{id_client}/pay/:
+    post:
+      tags:
+      - "cart"
+      summary: "Client pays for cart items"
+      description: ""
+      operationId: "payCartItems"
+      produces:
+      - "application/json"
+      parameters:
+        - in: "path"
+          name: "id_client"
+          required: true
+          description: ""
+          type: "integer"
+        - in: "query"
+          name: "currency"
+          type: "string"
+        - in: "query"
+          name: "credit_card"
+          type: "string"
+      responses:
+        "404":
+          description: "Cart Not Found"
+        "500":
+          description: "Internal Server"
+        "200":
+          description: "Success"
+          
+  /services:
+    get:
+      tags:
+      - "services"
+      summary: "Get all services"
+      description: "Allows clients to look for services"
+      operationId: "getAllServices"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "query"
+        name: "category"
+        description: "Service's category to look up"
+        type: "string"
+      - in: "query"
+        name: "name"
+        description: "query string"
+        type: "string"
+      responses:
+        "405":
+          description: "Invalid input"
+        "200":
+          description: "Sucessful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Service"
+    post:
+      tags:
+      - "services"
+      summary: "Service creation"
+      description: "Suppliers add services to the marketplace"
+      operationId: "addService"
+      consumes: 
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        description: "Service to be saved."
+        schema:
+          $ref: "#/definitions/Service"
+      responses:
+        "405":
+          description: "Invalid input"
+          
+     
+  /services/suppliers/{id_supplier}:        
+    get:
+      tags:
+      - "services"
+      summary: "Get service by supplier id"
+      description: ""
+      operationId: "getServicesupplierId"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id_supplier"
+        required: true
+        description: ""
+        type: "string"
+      responses:
+        "404":
+          description: "Service not found"
+        "200":
+          description: "Created"
+          schema:
+            $ref: "#/definitions/Service"
+  /services/{id_service}:        
+    get:
+      tags:
+      - "services"
+      summary: "Get service by id"
+      description: ""
+      operationId: "getService"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "404":
+          description: "Service not found"
+        "200":
+          description: "Created"
+          schema:
+            $ref: "#/definitions/Service"
+ 
+    put:
+      tags:
+      - "services"
+      summary: "Update service info"
+      description: ""
+      operationId: "updateService"
+      consumes: 
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        description: "New Service data"
+        schema:
+          $ref: "#/definitions/Service"
+      responses:
+        "405":
+          description: "Invalid input"
+        "204":
+          description: "Successful update"
+    delete:
+      tags:
+      - "services"
+      summary: "Delete service by id"
+      description: ""
+      operationId: "deleteService"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "string"
+      responses:
+        "405":
+          description: "Invalid input"
+        "204":
+          description: "Deleted"
+  /services/{id_service}/reviews/:
+    get:
+      tags:
+      - "reviews"
+      summary: "Get Service's reviews by service's id"
+      description: ""
+      operationId: "getReviewsForService"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "405":
+          description: "Invalid input"
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Review"
+    post:
+      tags:
+      - "reviews"
+      summary: "Create a new review"
+      description: "Allows clients to review a service."
+      operationId: "addRevieworService"
+      consumes: 
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        description: "Review to be saved"
+        schema:
+          $ref: "#/definitions/Review"
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "405":
+          description: "Invalid input"
+        "201":
+          description: "Created"
+  /services/{id_service}/reviews/{id_review}:
+    get:
+      tags:
+      - "reviews"
+      summary: "get a review by service's id and review's id"
+      description: ""
+      operationId: "getReview"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "integer"
+      - in: "path"
+        name: "id_review"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "405":
+          description: "Invalid input"
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Review"
+    delete:
+      tags:
+      - "reviews"
+      summary: "Delete a review by service's id and review's id"
+      description: ""
+      operationId: "deleteReview"
+      parameters:
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "integer"
+      - in: "path"
+        name: "id_review"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "405":
+          description: "Invalid input"
+        "204":
+          description: "Deleted"
+  /services/{id_service}/questions/:
+    get:
+      tags:
+      - "questions"
+      summary: "Get questions from service's id"
+      description: ""
+      operationId: "getQuestionForService"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "405":
+          description: "Invalid input"
+        "200":
+          description: "Success"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Question"
+    post:
+      tags:
+      - "questions"
+      summary: "Create a question"
+      description: ""
+      operationId: "addQuestionForService"
+      consumes: 
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        description: ""
+        schema:
+          $ref: "#/definitions/Question"
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "405":
+          description: "Invalid input"
+        "201":
+          description: "Created"
+  /services/{id_service}/questions/{id_question}:
+    get:
+      tags:
+      - "questions"
+      summary: "Get question info from service's id and question's id"
+      description: ""
+      operationId: "getQuestion"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: "Id del servicio al cual pertenece la pregunta"
+        type: "integer"
+      - in: "path"
+        name: "id_question"
+        required: true
+        description: "Id de la pregunta de la cual se desea obtener la información"
+        type: "integer"
+      responses:
+        "405":
+          description: "Invalid input"
+        "200":
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Question"
+    delete:
+      tags:
+      - "questions"
+      summary: "Delete question from service's id and question's id"
+      description: ""
+      operationId: "deleteQuestion"
+      parameters:
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "integer"
+      - in: "path"
+        name: "id_question"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "405":
+          description: "Invalid input"
+        "204":
+          description: "Deleted"
+    put:
+      tags:
+      - "questions"
+      summary: "Add a question to a service"
+      description: ""
+      operationId: "addAnswerToQuestion"
+      consumes: 
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        description: "question's string"
+        schema:
+          type: "object"
+          properties: 
+            answer:
+              type: "string"
+      - in: "path"
+        name: "id_service"
+        required: true
+        description: ""
+        type: "integer"
+      - in: "path"
+        name: "id_question"
+        required: true
+        description: ""
+        type: "integer"
+      responses:
+        "405":
+          description: "Invalid input"
+        "204":
+          description: "Updated"
+  /clients:
+    post:
+      tags:
+      - "clients"
+      summary: "Creates a new client"
+      description: "Creates a new client"
+      operationId: "createClient"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created client object"
+        required: true
+        schema:
+          $ref: "#/definitions/Client"
+      responses:
+        default:
+          description: "successful operation"
+  /clients/{id_client}:
+    get:
+      tags:
+      - "clients"
+      summary: "Get client by client identifier"
+      description: ""
+      operationId: "getClientByClientID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_client"
+        in: "path"
+        description: "The id_client that needs to be fetched"
+        required: true
+        type: "number"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Client"
+        "404":
+          description: "Client ID not found"
+    put:
+      tags:
+      - "clients"
+      summary: "Updated Client"
+      description: "This can only be done by the logged in Client."
+      operationId: "updateClient"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_client"
+        in: "path"
+        description: "Client ID that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated Client object"
+        required: true
+        schema:
+          $ref: "#/definitions/Client"
+      responses:
+        "400":
+          description: "Invalid client supplied"
+        "404":
+          description: "Client ID not found"
+    delete:
+      tags:
+      - "clients"
+      summary: "Delete Client"
+      description: "This can only be done by the logged in Client."
+      operationId: "deleteClient"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_client"
+        in: "path"
+        description: "The Client ID that needs to be deleted"
+        required: true
+        type: "number"
+      responses:
+        "400":
+          description: "Invalid Client ID supplied"
+        "404":
+          description: "Client ID not found"
+  
+  /clients/username/{username}:
+    get:
+      tags:
+      - "clients"
+      summary: "Get client by username"
+      description: ""
+      operationId: "getClientByUsername"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The username that needs to be fetched"
+        required: true
+        type: "number"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Client"
+        "404":
+          description: "Client not found"
+  /orders/clients/{id_client}:
+    get:
+      tags:
+      - "orders"
+      summary: "Retrieve all orders made by Client ID"
+      operationId: "getOrderusernaByClientID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_client"
+        in: "path"
+        description: "The Client ID that made the order"
+        required: true
+        type: "number"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Order"
+        "404":
+          description: "Invalid Client ID supplied"
+  /orders/clients/{id_client}/{id_order}:
+    get:
+      tags:
+      - "orders"
+      summary: "Find purchase order by ID made by Client ID"
+      operationId: "getOrderByIdAndClientID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_client"
+        in: "path"
+        description: "The Client ID that made the order"
+        required: true
+        type: "number"
+      - name: "id_order"
+        in: "path"
+        description: "Order ID that needs to be fetched"
+        required: true
+        type: "integer"
+        format: "number"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        "404":
+          description: "Order not found"
+    delete:
+      tags:
+      - "orders"
+      summary: "Delete purchase order by ID"
+      operationId: "deleteOrderByIdAndClientID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_client"
+        in: "path"
+        description: "The Client ID that made the order"
+        required: true
+        type: "number"
+      - name: "id_order"
+        in: "path"
+        description: "Order ID that needs to be deleted"
+        required: true
+        type: "integer"
+        format: "number"
+      responses:
+        "404":
+          description: "Order not found"
+  /questions/clients/{id_client}/{id_question}:
+    get:
+      tags:
+      - "questions"
+      summary: "Find question by ID made by Client ID"
+      operationId: "getQuestionByIdAndClientID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_client"
+        in: "path"
+        description: "The Client ID that made the question"
+        required: true
+        type: "number"
+      - name: "id_question"
+        in: "path"
+        description: "Question ID that needs to be fetched"
+        required: true
+        type: "integer"
+        format: "number"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Question"
+        "404":
+          description: "Question not found"
+    delete:
+      tags:
+      - "questions"
+      summary: "Delete question by ID"
+      operationId: "deleteQuestionByIdAndClientID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_client"
+        in: "path"
+        description: "The Client ID that made the question"
+        required: true
+        type: "number"
+      - name: "id_question"
+        in: "path"
+        description: "Question ID that needs to be deleted"
+        required: true
+        type: "integer"
+        format: "number"
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "403":
+          description: "Question can't be deleted"
+        "404":
+          description: "Question not found"
+  /sessions:
+    post:
+      tags:
+      - "sessions"
+      summary: "Creates a new user session"
+      description: "Creates a new session for user"
+      operationId: "createSession"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created Session object"
+        required: true
+        schema:
+          $ref: "#/definitions/Credential"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Session"
+        "403":
+          description: "Invalid Credentials supplied"
+        "404":
+          description: "Client not found"
+  /sessions/{session_id}:
+    delete:
+      tags:
+      - "sessions"
+      summary: "Delete Session"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteSession"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "session_id"
+        in: "path"
+        description: "The Session ID that needs to be deleted"
+        required: true
+        type: "number"
+      responses:
+        "400":
+          description: "Invalid Session ID supplied"
+        "404":
+          description: "Session ID not found"
+        
+  /suppliers:
+    post:
+      tags:
+      - "suppliers"
+      summary: "Creates a new supplier"
+      description: "Creates a new supplier"
+      operationId: "createSupplier"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created supplier object"
+        required: true
+        schema:
+          $ref: "#/definitions/Supplier"
+      responses:
+        default:
+          description: "successful operation"
+    get:
+      tags:
+      - "suppliers"
+      summary: "Get all suppliers"
+      description: "Get all suppliers"
+      operationId: "getAllSupplier"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Supplier"
+  /suppliers/username/{username}:
+    get:
+      tags:
+      - "suppliers"
+      summary: "Get supplier by username"
+      description: ""
+      operationId: "getSupplierByUsername"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "username"
+        in: "path"
+        description: "The username that needs to be fetched"
+        required: true
+        type: "number"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Supplier"
+        "500":
+          description: "Internal Server Error"
+        "404":
+          description: "Supplier ID not found"
+          
+  /suppliers/{id_supplier}:
+    get:
+      tags:
+      - "suppliers"
+      summary: "Get supplier by supplier identifier"
+      description: ""
+      operationId: "getSupplierBySupplierID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_supplier"
+        in: "path"
+        description: "The id_supplier that needs to be fetched"
+        required: true
+        type: "number"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Supplier"
+        "500":
+          description: "Internal Server Error"
+        "404":
+          description: "Supplier ID not found"
+    put:
+      tags:
+      - "suppliers"
+      summary: "Updated suppliers"
+      description: "This can only be done by the logged in Supplier."
+      operationId: "updateSupplier"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_supplier"
+        in: "path"
+        description: "Supplier ID that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated Supplier object"
+        required: true
+        schema:
+          $ref: "#/definitions/Supplier"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/Supplier"
+        "500":
+          description: "Internal Server Error"
+        "404":
+          description: "Supplier ID not found"
+    delete:
+      tags:
+      - "suppliers"
+      summary: "Delete Supplier"
+      description: "This can only be done by the logged in Supplier."
+      operationId: "deleteSupplier"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_supplier"
+        in: "path"
+        description: "The Supplier ID that needs to be deleted"
+        required: true
+        type: "number"
+      responses:
+        "400":
+          description: "Invalid Supplier ID"
+        "500":
+          description: "Internal Server Error"
+          
+
+  /services/suppliers/{id_supplier}/{id_service}:
+    get:
+      tags:
+      - "services"
+      summary: "Find a service by ID made by Supplier ID"
+      operationId: "getServiceByIdAndSupplierID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_supplier"
+        in: "path"
+        description: "The Supplier ID that made that service"
+        required: true
+        type: "number"
+      - name: "id_service"
+        in: "path"
+        description: "Service ID that needs to be fetched"
+        required: true
+        type: "integer"
+        format: "number"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Service"
+        "400":
+          description: "Invalid Service ID or Supplier ID supplied"
+        "404":
+          description: "Service or Supplier not found"
+    delete:
+      tags:
+      - "services"
+      summary: "Delete service by ID made by Supplier ID"
+      operationId: "deletServiceByIdAndSupplierID"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id_supplier"
+        in: "path"
+        description: "The Supplier ID that made that service"
+        required: true
+        type: "number"
+      - name: "id_service"
+        in: "path"
+        description: "Service ID that needs to be delete"
+        required: true
+        type: "integer"
+        format: "number"
+      responses:
+        "400":
+          description: "Invalid Service ID or Supplier ID supplied"
+        "404":
+          description: "Service or Supplier not found"
+  
+
+definitions:
+
+  Item:
+    type: "object"
+    properties:
+      id_servicio:
+        type: "integer"
+        format: "int64"
+      quantity:
+        type: "integer"
+        format: "int64"
+    xml:
+      name: "Item"
+      
+      
+  Cart:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      items:
+        type: "array"
+        items:
+          $ref: '#/definitions/Item'
+    xml:
+      name: "Cart"
+      
+      
+  Question:
+    type: "object"
+    properties:
+      id_user:
+        type: "integer"
+        format: "int64"
+      question:
+        type: "string"
+      answer:
+        type: "string"
+      id_question:
+        type: "integer"
+        format: "int64"
+      id_client:
+        type: "integer"
+        format: "int64"
+      id_service:
+        type: "integer"
+        format: "int64"
+      date:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "Question"
+  Review:
+    type: "object"
+    properties:
+      id_user:
+        type: "integer"
+        format: "int64"
+      comment: 
+        type: "string"
+      score:
+        type: "integer"
+        minimum: 1
+        maximum: 5
+  Service: #esta era ServiceFull de Daniel, tiene reviews y questions
+    type: "object"
+    properties:
+      id_service:
+        type: "integer"
+        format: "int64"
+      id_supplier:
+        type: "integer"
+        format: "int64"
+      category:
+        type: "string"
+      name:
+        type: "string"
+      start_date:
+        type: "string"
+        format: "date-time"
+      end_date:
+        type: "string"
+        format: "date-time"
+      reviews:
+        type: "array"
+        items: 
+          $ref: "#/definitions/Review"
+      questions:
+        type: "array"
+        items: 
+          $ref: "#/definitions/Question"
+  Client:
+    type: "object"
+    properties:
+      id_client:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      age:
+        type: "integer"
+        format: "int32"
+      photo:
+        type: "string"
+  Supplier:
+    type: "object"
+    properties:
+      id_supplier:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      age:
+        type: "integer"
+        format: "int32"
+      photo:
+        type: "string"
+      website:
+        type: "string"
+      contact:
+        type: "string"
+        
+  Credential:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+      password:
+        type: "string"
+  Session:
+    type: "object"
+    properties:
+      session_id:
+        type: "string"
+      token:
+        type: "string"
+  Order: 
+    type: object
+    required:
+    - id_order
+    - payment_method
+    - date
+    - total
+    - currency
+    - order_items
+    properties:
+      id_order:
+        type: string
+        format: "int32"
+        example: 001
+      id_client:
+        type: string
+        format: "int32"
+        example: 001
+      payment_method:
+        type: string
+        enum:
+          - COP
+          - USD
+          - CNY
+          - JPY
+          - HKD
+          - GBP
+          - EUR
+      date:
+        type: string
+        format: date-time
+        example: 2016-08-29T09:12:33.001Z
+      total:
+        type: number
+        example: 99.99
+      currency:
+        type: string
+        enum: 
+          - CreditCard
+          - DebitCard
+          - ElectronicBankTransfers
+      oder_items:
+        type: array
+        items:
+          $ref: '#/definitions/Item'
+  

@@ -13,6 +13,7 @@ import greenbnb.ms.connection.Entities.Service;
 import greenbnb.ms.connection.Repositories.ServiceRepository;
 import io.spring.guides.gs_producing_web_service.GetServiceBySupplierRequest;
 import io.spring.guides.gs_producing_web_service.GetServiceRequest;
+import io.spring.guides.gs_producing_web_service.GetServiceByNameRequest;
 import io.spring.guides.gs_producing_web_service.GetServiceResponse;
 import io.spring.guides.gs_producing_web_service.GetServicesListResponse;
 import io.spring.guides.gs_producing_web_service.ServiceSOAP;
@@ -102,4 +103,24 @@ public class ServiceEndpoint {
 		return response;
 	}
 
+	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "getServiceByNameRequest")
+	@ResponsePayload
+	public GetServiceResponse getServiceByName(@RequestPayload GetServiceByNameRequest request) {
+		GetServiceResponse response = new GetServiceResponse();
+		String name = request.getServiceName();
+
+		Optional<Service> serviceDb = serviceRepository.findByName(name);
+
+		ServiceSOAP found = new ServiceSOAP();
+		if(serviceDb.isPresent()){
+			found.setCategory(serviceDb.get().getCategory());
+			found.setName(serviceDb.get().getName());
+			found.setServiceId(serviceDb.get().getServiceId());
+			found.setSupplierId(serviceDb.get().getSupplierId());
+		}
+
+		response.setService(found);
+		System.out.println(response);
+		return response;
+	}
 }

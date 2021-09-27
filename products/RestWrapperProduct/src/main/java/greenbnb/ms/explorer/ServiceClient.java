@@ -12,6 +12,7 @@ import com.example.consumingwebservice.wsdl.GetServiceBySupplierRequest;
 import com.example.consumingwebservice.wsdl.GetServicesListResponse;
 import com.example.consumingwebservice.wsdl.GetServiceRequest;
 import com.example.consumingwebservice.wsdl.GetServiceResponse;
+import com.example.consumingwebservice.wsdl.GetServiceByNameRequest;
 
 public class ServiceClient extends WebServiceGatewaySupport {
 
@@ -59,5 +60,18 @@ public class ServiceClient extends WebServiceGatewaySupport {
     return response;
   }
 
+  public GetServiceResponse getServiceByName(String name) {
+
+    GetServiceByNameRequest request = new GetServiceByNameRequest();
+    request.setServiceName(name);
+
+    String uri = discoveryClient.getInstances("db-connection").get(0).getUri().toString();
+    GetServiceResponse response = (GetServiceResponse) getWebServiceTemplate()
+            .marshalSendAndReceive(uri+"/ws/services", request,
+                    new SoapActionCallback(
+                            "http://spring.io/guides/gs-producing-web-service/GetServiceRequest"));
+
+    return response;
+  }
 }
 
