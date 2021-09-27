@@ -1,4 +1,35 @@
-.DS_Store
-products/SoapServiceProducts/target/producing-web-service-complete-0.0.1-SNAPSHOT.jar
-products/SoapServiceProducts/target/producing-web-service-complete-0.0.1-SNAPSHOT.jar.original
-products/SoapServiceProducts/target/generated-sources/jaxb/META-INF/JAXB/episode_xjc_1.xjb
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+**/.DS_Store
+
