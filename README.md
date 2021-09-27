@@ -183,4 +183,21 @@ POST localhost:8185/sessions?username={supplieruser}&password={password}
 GET localhost:8185/suppliers
 ```  
  #### Consultar Galeria de Servicios
+ - Ruta para obtener todos los servicios
+ ```bash
+GET localhost:8181/service
+```  
+ - Ruta para obtener un servicio por su Id
+ ```bash
+GET localhost:8181/{serviceId}
+```  
+ - Ruta para obtener todos los servicios de un proveedor mediante su id
+ ```bash
+GET localhost:8181/service/suppliers/{supplierId}
+```  
+ - Ruta para obtener un servicio por su nombre
+ ```bash
+GET localhost:8181/service/name/{serviceName}
+```  
+
  
