@@ -10,9 +10,10 @@ import java.util.Optional;
 /**
  * MongoRepository creates query based on functions names. 
  */
-public interface ServiceRepository extends MongoRepository<Service, Integer>{
+public interface ServiceRepository extends MongoRepository<Service, String>{
     
     public List<Service> findAll();
     public Optional<Service> findByName(String name);
+    public Optional<Service> findById(String id);
     
 }

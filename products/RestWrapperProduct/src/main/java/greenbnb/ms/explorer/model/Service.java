@@ -11,6 +11,8 @@ public class Service {
   private String category;
   private String address;
   private String vehicle;
+  private String longitud;
+  private String latitud;
   public String getName() {
     return name;
   }
@@ -52,6 +54,24 @@ public class Service {
   }
   public void setVehicle(String vehicle) {
     this.vehicle = vehicle;
+  }
+  public String getServiceId() {
+    return serviceId;
+  }
+  public void setServiceId(String serviceId) {
+    this.serviceId = serviceId;
+  }
+  public String getLongitud() {
+    return longitud;
+  }
+  public void setLongitud(String longitud) {
+    this.longitud = longitud;
+  }
+  public String getLatitud() {
+    return latitud;
+  }
+  public void setLatitud(String latitud) {
+    this.latitud = latitud;
   }
 
 }

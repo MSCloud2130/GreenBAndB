@@ -1,7 +1,7 @@
 package greenbnb.ms.explorer;
 
 import java.util.List;
-
+import java.util.Optional;
 
 import com.example.consumingwebservice.wsdl.ServiceSOAP;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -105,11 +105,15 @@ public class ExplorerController extends WebServiceGatewaySupport{
         Service response = serviceservices.createService(service);
         return response;
     }
-    @GetMapping("/location")
-    public String serviceLocation(){
+    @GetMapping("/location/{id}")
+    public String serviceLocation(@PathVariable("id") String id){
+        Optional<Service> result = serviceservices.findService(id);
+        Service r = result.get();
+        System.out.println(r.getLatitud());
+        System.out.println(r.getLongitud());
         String api_key = "AIzaSyBAfD2AfFCstxKHCuNsUJFzWDeoGhtaDNg";
-        String longitud =String.valueOf(-74.06483472329678);
-        String lat = String.valueOf(4.628477798453025) ;
+        String longitud =String.valueOf(r.getLongitud());
+        String lat = String.valueOf(r.getLatitud()) ;
         String html = 
 "        <!DOCTYPE html>" +'\n' +
 

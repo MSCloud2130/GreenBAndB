@@ -1,5 +1,7 @@
 package greenbnb.ms.explorer.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 
@@ -15,5 +17,8 @@ public class Serviceservices extends WebServiceGatewaySupport {
   ServiceRepository repository;
   public Service createService(Service service){
     return repository.save(service);
+  }
+  public Optional<Service> findService(String id){
+    return repository.findById(id);
   }
 }
