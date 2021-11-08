@@ -1,4 +1,4 @@
-package greenbnb.ms.explorer;
+package greenbnb.ms.explorer.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -6,8 +6,11 @@ import java.util.Optional;
 import com.example.consumingwebservice.wsdl.ServiceSOAP;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import greenbnb.ms.explorer.model.Review;
+import greenbnb.ms.explorer.service.ProductsService;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+
 
 import greenbnb.ms.explorer.model.Service;
 import greenbnb.ms.explorer.services.Serviceservices;
@@ -25,6 +34,11 @@ import greenbnb.ms.explorer.services.Serviceservices;
 @RestController
 @RequestMapping("service")
 public class ExplorerController extends WebServiceGatewaySupport{
+    private String weatherURL = "http://api.weatherapi.com/v1/forecast.json";
+    @Value("${weather.api}")
+    private String weatherapi;
+
+    private String restCountriesURL = "https://restcountries.com/v3.1/name/";
     
     @Autowired
     Environment environment;
@@ -37,7 +51,7 @@ public class ExplorerController extends WebServiceGatewaySupport{
 
 
     @Bean
-    @LoadBalanced
+//    @LoadBalanced
     RestTemplate restTemplate(){
         return new RestTemplate();
     }
@@ -202,5 +216,39 @@ public class ExplorerController extends WebServiceGatewaySupport{
 "</html>" +'\n';
 
         return html;
+
+    @PostMapping("/{id_service}/reviews")
+    public Review createReviewForService(@PathVariable("id_service")String id_service, @RequestBody Review review){
+        review.setId_service(id_service);
+        return service.createReviewForService(review);
+    }
+
+    @GetMapping("/{id_service}/reviews")
+    public List<Review> searchReviewsForService(@PathVariable("id_service") String id_service){
+        return service.getByIdService(id_service);
+    }
+
+    @GetMapping("/{id_service}/reviews/{id_review}")
+    public Optional<Review> searchReviewById(@PathVariable("id_service") String id_service, @PathVariable("id_review") String id_review){
+        return service.getById(id_review);
+    }
+
+    @DeleteMapping("/{id_service}/reviews/{id_review}")
+    public void deleteReviewById(@PathVariable("id_service") String id_service, @PathVariable("id_review") String id_review){
+        service.deleteReviewById(id_review);
+    }
+
+    @GetMapping("/{id_service}/info")
+    public JSONObject getServiceInfo(@PathVariable("id_service") String id_service) throws ParseException {
+        String rcResponse = restTemplate.getForObject(restCountriesURL + "colombia", String.class);
+        String petURL =weatherURL + "?q=Bogota&days=5&aqi=no&alerts=no&key=" + weatherapi;
+        String owResponse = restTemplate.getForObject(petURL, String.class);
+
+        JSONParser parser = new JSONParser();
+        JSONArray objArr = (JSONArray) parser.parse(rcResponse);
+        JSONObject obj = (JSONObject) objArr.get(0);
+        JSONObject wObj = (JSONObject) parser.parse(owResponse);
+        obj.put("weather", wObj);
+        return obj;
     }
 }
