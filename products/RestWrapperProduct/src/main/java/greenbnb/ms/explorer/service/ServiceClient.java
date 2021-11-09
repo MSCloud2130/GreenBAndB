@@ -1,4 +1,4 @@
-package greenbnb.ms.explorer;
+package greenbnb.ms.explorer.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,8 @@ import com.example.consumingwebservice.wsdl.GetServicesListResponse;
 import com.example.consumingwebservice.wsdl.GetServiceRequest;
 import com.example.consumingwebservice.wsdl.GetServiceResponse;
 import com.example.consumingwebservice.wsdl.GetServiceByNameRequest;
-
+import org.springframework.stereotype.Component;
+ 
 public class ServiceClient extends WebServiceGatewaySupport {
 
   @Autowired

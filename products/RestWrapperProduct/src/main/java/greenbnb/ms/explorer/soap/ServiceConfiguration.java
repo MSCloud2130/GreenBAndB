@@ -1,5 +1,6 @@
-package greenbnb.ms.explorer;
+package greenbnb.ms.explorer.soap;
 
+import greenbnb.ms.explorer.service.ServiceClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Bean;

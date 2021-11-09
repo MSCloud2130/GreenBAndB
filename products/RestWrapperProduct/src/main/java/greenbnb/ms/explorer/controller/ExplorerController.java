@@ -29,6 +29,7 @@ import org.json.simple.parser.JSONParser;
 
 
 import greenbnb.ms.explorer.model.Service;
+import greenbnb.ms.explorer.service.ServiceClient;
 import greenbnb.ms.explorer.services.Serviceservices;
 
 @RestController
@@ -48,6 +49,8 @@ public class ExplorerController extends WebServiceGatewaySupport{
     ServiceClient serviceClient;
     @Autowired
     Serviceservices serviceservices;
+    @Autowired
+    ProductsService productService;
 
 
     @Bean
@@ -215,27 +218,29 @@ public class ExplorerController extends WebServiceGatewaySupport{
 
 "</html>" +'\n';
 
+
         return html;
+    }
 
     @PostMapping("/{id_service}/reviews")
     public Review createReviewForService(@PathVariable("id_service")String id_service, @RequestBody Review review){
         review.setId_service(id_service);
-        return service.createReviewForService(review);
+        return productService.createReviewForService(review);
     }
 
     @GetMapping("/{id_service}/reviews")
     public List<Review> searchReviewsForService(@PathVariable("id_service") String id_service){
-        return service.getByIdService(id_service);
+        return productService.getByIdService(id_service);
     }
 
     @GetMapping("/{id_service}/reviews/{id_review}")
     public Optional<Review> searchReviewById(@PathVariable("id_service") String id_service, @PathVariable("id_review") String id_review){
-        return service.getById(id_review);
+        return productService.getById(id_review);
     }
 
     @DeleteMapping("/{id_service}/reviews/{id_review}")
     public void deleteReviewById(@PathVariable("id_service") String id_service, @PathVariable("id_review") String id_review){
-        service.deleteReviewById(id_review);
+        productService.deleteReviewById(id_review);
     }
 
     @GetMapping("/{id_service}/info")
@@ -251,4 +256,5 @@ public class ExplorerController extends WebServiceGatewaySupport{
         obj.put("weather", wObj);
         return obj;
     }
+    
 }
