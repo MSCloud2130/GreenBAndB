@@ -1,0 +1,103 @@
+services:
+  gitea:
+    image: gitea/gitea
+    container_name: gitea
+    volumes: 
+      - gitea-data:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "3000:3000"
+      - "22:22"
+    networks:
+      - devopsnet
+    restart: unless-stopped
+
+  jenkins:
+    build: ./jenkins
+    image: jenkins
+    container_name: jenkins
+    restart: unless-stopped
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - soapdata:/deploy/productssoap
+      - restdata:/deploy/productsrest
+      - billingdata:/deploy/billing
+      - usersdata:/deploy/users
+    ports:
+      - 8080:8080
+    networks:
+      - devopsnet
+        
+  eurekaserver:
+    build: ./eureka
+    image: eurekaserver 
+    container_name: eurekaserver 
+    ports:
+      - 8761:8761 
+    networks:
+      - devopsnet 
+
+  usersserver:
+    build: ./tomcat
+    image: usersserver 
+    container_name: usersserver 
+    ports:
+      - 9090:8080
+    volumes: 
+      - usersdata:/usr/local/tomcat/webapps
+    environment:
+      - TOMCAT_PASSWORD=tomcat
+    networks:
+      - devopsnet 
+
+  restserver:
+    build: ./tomcat
+    image: restserver 
+    container_name: restserver 
+    ports:
+      - 9091:8080
+    volumes: 
+      - restdata:/usr/local/tomcat/webapps 
+    environment:
+      - TOMCAT_PASSWORD=tomcat
+    networks:
+      - devopsnet 
+        
+  soapserver:
+    build: ./tomcat
+    image: soapserver 
+    container_name: soapserver 
+    ports:
+      - 9092:8080
+    volumes: 
+      - soapdata:/usr/local/tomcat/webapps 
+    environment:
+      - TOMCAT_PASSWORD=tomcat
+    networks:
+      - devopsnet 
+
+  billingserver:
+    build: ./tomcat
+    image: billingserver 
+    container_name: billingserver 
+    ports:
+      - 9093:8080
+    volumes: 
+      - billingdata:/usr/local/tomcat/webapps
+    environment:
+      - TOMCAT_PASSWORD=tomcat
+    networks:
+      - devopsnet 
+
+volumes:
+  gitea-data:
+  usersdata:
+  billingdata:
+  soapdata:
+  restdata:
+  jenkins-data:
+
+networks:
+  devopsnet:
+    driver: bridge
