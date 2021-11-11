@@ -243,11 +243,21 @@ public class ExplorerController extends WebServiceGatewaySupport{
         productService.deleteReviewById(id_review);
     }
 
-    @GetMapping("/{id_service}/info")
+     @GetMapping("/{id_service}/info")
     public JSONObject getServiceInfo(@PathVariable("id_service") String id_service) throws ParseException {
-        String rcResponse = restTemplate.getForObject(restCountriesURL + "colombia", String.class);
-        String petURL =weatherURL + "?q=Bogota&days=5&aqi=no&alerts=no&key=" + weatherapi;
-        String owResponse = restTemplate.getForObject(petURL, String.class);
+        Optional<Service> result = serviceservices.findService(id_service);
+        Service r = result.get();
+
+        long days = daysBetween(r.getStartDate().substring(0, 10), r.getEndDate().substring(0, 10));
+
+        String urlCountries = restCountriesURL + r.getCountry();
+        String urlWeather = weatherURL + "?q=" + r.getCity() + "&days=" + String.valueOf(days) + "&aqi=no&alerts=no&key=" + weatherapi;
+
+        System.out.println("countries " + urlCountries);
+        System.out.println("weather " + urlWeather);
+
+        String rcResponse = restTemplate.getForObject(urlCountries, String.class);
+        String owResponse = restTemplate.getForObject(urlWeather, String.class);
 
         JSONParser parser = new JSONParser();
         JSONArray objArr = (JSONArray) parser.parse(rcResponse);
@@ -256,5 +266,23 @@ public class ExplorerController extends WebServiceGatewaySupport{
         obj.put("weather", wObj);
         return obj;
     }
+    
+   private long daysBetween(String start, String end){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1;
+        Date date2;
+        try{
+            date1 = sdf.parse(start);
+            date2 = sdf.parse(end);
+            long diffInMillies = Math.abs(date2.getTime() - date1.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+            return diff;
+        }catch(Exception e){
+
+        }
+        return 0;
+   }
+
     
 }
