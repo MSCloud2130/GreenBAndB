@@ -13,6 +13,11 @@ public class Service {
   private String vehicle;
   private String longitud;
   private String latitud;
+  private String country;
+  private String city;
+
+  
+  
   public String getName() {
     return name;
   }
@@ -72,6 +77,21 @@ public class Service {
   }
   public void setLatitud(String latitud) {
     this.latitud = latitud;
+  }
+  public String getCountry() {
+    return country;
+  }
+
+  public void setCountry(String country) {
+    this.country = country;
+  }
+
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
   }
 
 }
